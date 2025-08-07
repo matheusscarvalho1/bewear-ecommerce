@@ -19,6 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useAddShippingAddress } from "@/hooks/mutations/use-add-shipping-address";
 
 const addressFormSchema = z.object({
   email: z.email("Email inválido."),
@@ -77,8 +78,23 @@ function AddressForm() {
     },
   });
 
-  function onSubmit() {
-    // TODO: handle submit
+  const { mutateAsync, isPending } = useAddShippingAddress();
+
+  async function onSubmit(values: AddressFormValues) {
+    await mutateAsync({
+      email: values.email,
+      fullName: values.fullName,
+      cpf: values.cpf,
+      phone: values.phone,
+      zipCode: values.zipCode,
+      address: values.address,
+      number: values.number,
+      complement: values.complement,
+      district: values.district,
+      city: values.city,
+      state: values.state,
+    });
+    form.reset();
   }
 
   return (
@@ -260,8 +276,8 @@ function AddressForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="mt-2">
-          Salvar endereço
+        <Button type="submit" className="mt-2" disabled={isPending}>
+          {isPending ? "Salvando..." : "Salvar endereço"}
         </Button>
       </form>
     </Form>
