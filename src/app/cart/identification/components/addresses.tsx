@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAddShippingAddress } from "@/hooks/mutations/use-add-shipping-address";
+import { useShippingAddresses } from "@/hooks/queries/use-shipping-addresses";
 
 const addressFormSchema = z.object({
   email: z.email("Email inválido."),
@@ -38,6 +39,8 @@ type AddressFormValues = z.infer<typeof addressFormSchema>;
 
 const Addresses = () => {
   const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
+  const { data: addresses, isLoading } = useShippingAddresses();
+
   return (
     <Card>
       <CardHeader>
@@ -45,12 +48,32 @@ const Addresses = () => {
       </CardHeader>
       <CardContent>
         <RadioGroup value={selectedAddress} onValueChange={setSelectedAddress}>
-          <Card>
-            <CardContent>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="add_new" id="add_new" />
-                <Label htmlFor="add_new">Adicionar novo endereço</Label>
-              </div>
+          {addresses?.map((address) => (
+            <Card
+              key={address.id}
+              className={`border-2 ${selectedAddress === address.id ? "border-primary" : "border-muted"} transition-colors`}
+            >
+              <CardContent className="flex items-center gap-3 px-4 py-4">
+                <RadioGroupItem value={address.id} id={address.id} />
+                <div className="flex flex-col">
+                  <span className="font-medium">
+                    {address.recipientName}, {address.street}, {address.number}
+                    {address.complement ? `, ${address.complement}` : ""},{" "}
+                    {address.neighbourhood}
+                  </span>
+                  <span className="text-muted-foreground text-xs">
+                    {address.city} - {address.state}, {address.zipCode}
+                  </span>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+          <Card
+            className={`border-2 ${selectedAddress === "add_new" ? "border-primary" : "border-muted"} transition-colors`}
+          >
+            <CardContent className="flex items-center gap-3 px-4 py-4">
+              <RadioGroupItem value="add_new" id="add_new" />
+              <Label htmlFor="add_new">Adicionar novo</Label>
             </CardContent>
           </Card>
         </RadioGroup>
