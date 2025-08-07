@@ -45,7 +45,7 @@ export const addProductToCart = async (data: addProductToCartSchema) => {
   const cartItem = await db.query.cartItemTable.findFirst({
     where: (cartItem, { eq }) =>
       eq(cartItem.cartId, cartId) &&
-      eq(cartItem.porductVariantId, data.productVariantId),
+      eq(cartItem.productVariantId, data.productVariantId),
   });
   if (cartItem) {
     await db
@@ -58,7 +58,7 @@ export const addProductToCart = async (data: addProductToCartSchema) => {
   }
   await db.insert(cartItemTable).values({
     cartId,
-    porductVariantId: data.productVariantId,
+    productVariantId: data.productVariantId,
     quantity: data.quantity,
   });
 };
