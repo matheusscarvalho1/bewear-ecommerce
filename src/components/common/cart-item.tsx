@@ -30,6 +30,7 @@ const CartItem = ({
     mutationKey: ["remove-cart-product"],
     mutationFn: () => removeProductFromCart({ cartItemId: id }),
     onSuccess: () => {
+      //Apaga os dados de um componente e invalida em outros componentes
       queryClient.invalidateQueries({
         queryKey: ["cart"],
       });
