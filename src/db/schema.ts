@@ -245,7 +245,7 @@ export const orderTable = pgTable("order", {
   complement: text(),
   city: text().notNull(),
   state: text().notNull(),
-  neighborhood: text().notNull(),
+  neighbourhood: text().notNull(),
   zipCode: text().notNull(),
   country: text().notNull(),
   phone: text().notNull(),
