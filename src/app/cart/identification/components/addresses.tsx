@@ -59,7 +59,6 @@ const Addresses = ({
 
   async function handleGoToPayment(addressId: string) {
     await updateShippingAddress({ shippingAddressId: addressId });
-    // redirecionar para pagamento (implementar conforme necessário)
   }
 
   return (
@@ -86,6 +85,7 @@ const Addresses = ({
                     {address.city} - {address.state}, {address.zipCode}
                   </span>
                 </div>
+
                 {selectedAddress === address.id && (
                   <Button
                     className="ml-auto"
