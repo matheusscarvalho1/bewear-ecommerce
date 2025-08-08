@@ -21,7 +21,8 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { shippingAddressTable } from "@/db/schema";
 import { useAddShippingAddress } from "@/hooks/mutations/use-add-shipping-address";
-import { useShippingAddresses } from "@/hooks/queries/use-shipping-addresses";
+import { useUpdateCartShippingAddress } from "@/hooks/mutations/use-update-cart-shipping-address";
+import { useUserAddress } from "@/hooks/queries/use-shipping-addresses";
 
 const addressFormSchema = z.object({
   email: z.email("Email inválido."),
@@ -38,16 +39,28 @@ const addressFormSchema = z.object({
 });
 type AddressFormValues = z.infer<typeof addressFormSchema>;
 
-interface AddressesProp {
-  //'shippingAddresses vai ser o resultado do 'select' da tabela 'shippingAddressesTable'
+interface AddressesProps {
   shippingAddresses: (typeof shippingAddressTable.$inferSelect)[];
+  defaultShippingAddressId: string | null;
 }
 
-const Addresses = ({ shippingAddresses }: AddressesProp) => {
-  const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
-  const { data: addresses, isLoading } = useShippingAddresses({
+const Addresses = ({
+  shippingAddresses,
+  defaultShippingAddressId,
+}: AddressesProps) => {
+  const [selectedAddress, setSelectedAddress] = useState<string | null>(
+    defaultShippingAddressId || null,
+  );
+  const { data: addresses } = useUserAddress({
     initialData: shippingAddresses,
   });
+  const { mutateAsync: updateShippingAddress, isPending: isUpdating } =
+    useUpdateCartShippingAddress();
+
+  async function handleGoToPayment(addressId: string) {
+    await updateShippingAddress({ shippingAddressId: addressId });
+    // redirecionar para pagamento (implementar conforme necessário)
+  }
 
   return (
     <Card>
@@ -73,6 +86,15 @@ const Addresses = ({ shippingAddresses }: AddressesProp) => {
                     {address.city} - {address.state}, {address.zipCode}
                   </span>
                 </div>
+                {selectedAddress === address.id && (
+                  <Button
+                    className="ml-auto"
+                    onClick={() => handleGoToPayment(address.id)}
+                    disabled={isUpdating}
+                  >
+                    {isUpdating ? "Salvando..." : "Ir para pagamento"}
+                  </Button>
+                )}
               </CardContent>
             </Card>
           ))}
@@ -85,13 +107,23 @@ const Addresses = ({ shippingAddresses }: AddressesProp) => {
             </CardContent>
           </Card>
         </RadioGroup>
-        {selectedAddress === "add_new" && <AddressForm />}
+        {selectedAddress === "add_new" && (
+          <AddressForm
+            onAddressCreated={async (newAddressId: string) => {
+              await updateShippingAddress({ shippingAddressId: newAddressId });
+            }}
+          />
+        )}
       </CardContent>
     </Card>
   );
 };
 
-function AddressForm() {
+function AddressForm({
+  onAddressCreated,
+}: {
+  onAddressCreated?: (addressId: string) => void;
+}) {
   const form = useForm<AddressFormValues>({
     resolver: zodResolver(addressFormSchema),
     defaultValues: {
@@ -112,7 +144,7 @@ function AddressForm() {
   const { mutateAsync, isPending } = useAddShippingAddress();
 
   async function onSubmit(values: AddressFormValues) {
-    await mutateAsync({
+    const result = await mutateAsync({
       email: values.email,
       fullName: values.fullName,
       cpf: values.cpf,
@@ -125,6 +157,9 @@ function AddressForm() {
       city: values.city,
       state: values.state,
     });
+    if (onAddressCreated && result?.id) {
+      await onAddressCreated(result.id);
+    }
     form.reset();
   }
 

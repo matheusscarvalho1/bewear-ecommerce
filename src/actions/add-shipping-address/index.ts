@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 
 import { db } from "@/db";
@@ -16,19 +17,25 @@ export const addShippingAddress = async (data: AddShippingAddressSchema) => {
   if (!session?.user) {
     throw new Error("Unauthorized");
   }
-  await db.insert(shippingAddressTable).values({
-    userId: session.user.id,
-    recipientName: data.fullName,
-    street: data.address,
-    number: data.number,
-    complement: data.complement,
-    city: data.city,
-    state: data.state,
-    neighbourhood: data.district,
-    zipCode: data.zipCode,
-    country: "BR",
-    phone: data.phone,
-    email: data.email,
-    cpfOrCnpj: data.cpf,
-  });
+  const [shippingAddress] = await db
+    .insert(shippingAddressTable)
+    .values({
+      userId: session.user.id,
+      recipientName: data.fullName,
+      street: data.address,
+      number: data.number,
+      complement: data.complement,
+      city: data.city,
+      state: data.state,
+      neighbourhood: data.district,
+      zipCode: data.zipCode,
+      country: "BR",
+      phone: data.phone,
+      email: data.email,
+      cpfOrCnpj: data.cpf,
+    })
+    .returning({ id: shippingAddressTable.id });
+
+  revalidatePath("/cart/identification");
+  return shippingAddress;
 };
