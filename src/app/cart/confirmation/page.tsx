@@ -1,17 +1,16 @@
-import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import Footer from "@/components/common/footer";
 import { Header } from "@/components/common/header";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { db } from "@/db";
-import { shippingAddressTable } from "@/db/schema";
 import { auth } from "@/lib/auth";
 
 import CartSummary from "../components/cart-sumary";
-import Addresses from "./components/addresses";
 
-const IdentificationPage = async () => {
+const CartConfirmation = async () => {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
@@ -37,21 +36,41 @@ const IdentificationPage = async () => {
   if (!cart || cart?.items.length === 0) {
     redirect("/");
   }
-  const shippingAddresses = await db.query.shippingAddressTable.findMany({
-    where: eq(shippingAddressTable.userId, session.user.id),
-  });
   const cartTotalInCents = cart.items.reduce(
     (acc, item) => acc + item.productVariant.priceInCents * item.quantity,
     0,
   );
+
+  if (!cart.shippingAddress) {
+    redirect("/cart/identification");
+  }
+
   return (
-    <div>
+    <div className="space-y-12">
       <Header />
       <div className="space-y-4 px-5">
-        <Addresses
-          shippingAddresses={shippingAddresses}
-          defaultShippingAddressId={cart.shippingAddress?.id || null}
-        />
+        <Card>
+          <CardHeader>
+            <CardTitle>Identificação</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col">
+              <p className="text-sm font-medium">
+                {cart.shippingAddress.recipientName},{" "}
+                {cart.shippingAddress.street}, {cart.shippingAddress.number}
+                {cart.shippingAddress.complement
+                  ? `, ${cart.shippingAddress.complement}`
+                  : ""}
+                , {cart.shippingAddress.neighbourhood}{" "}
+                {cart.shippingAddress.city} - {cart.shippingAddress.state},{" "}
+                {cart.shippingAddress.zipCode}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+        <Button className="w-full rounded-full" size="lg">
+          Finalizar compra
+        </Button>
         <CartSummary
           subTotalInCents={cartTotalInCents}
           totalInCents={cartTotalInCents}
@@ -64,12 +83,12 @@ const IdentificationPage = async () => {
             imageUrl: item.productVariant.imageUrl,
           }))}
         />
-        <div className="mt-12">
-          <Footer />
-        </div>
+      </div>
+      <div className="mt-12">
+        <Footer />
       </div>
     </div>
   );
 };
 
-export default IdentificationPage;
+export default CartConfirmation;

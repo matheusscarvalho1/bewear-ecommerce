@@ -1,6 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { PatternFormat } from "react-number-format";
@@ -48,6 +49,7 @@ const Addresses = ({
   shippingAddresses,
   defaultShippingAddressId,
 }: AddressesProps) => {
+  const router = useRouter();
   const [selectedAddress, setSelectedAddress] = useState<string | null>(
     defaultShippingAddressId || null,
   );
@@ -59,6 +61,7 @@ const Addresses = ({
 
   async function handleGoToPayment(addressId: string) {
     await updateShippingAddress({ shippingAddressId: addressId });
+    router.push("/cart/confirmation");
   }
 
   return (
@@ -76,11 +79,11 @@ const Addresses = ({
               <CardContent className="flex items-center gap-3 px-4 py-4">
                 <RadioGroupItem value={address.id} id={address.id} />
                 <div className="flex flex-col">
-                  <span className="font-medium">
+                  <p className="text-sm font-medium">
                     {address.recipientName}, {address.street}, {address.number}
                     {address.complement ? `, ${address.complement}` : ""},{" "}
                     {address.neighbourhood}
-                  </span>
+                  </p>
                   <span className="text-muted-foreground text-xs">
                     {address.city} - {address.state}, {address.zipCode}
                   </span>
@@ -90,9 +93,8 @@ const Addresses = ({
                   <Button
                     className="ml-auto"
                     onClick={() => handleGoToPayment(address.id)}
-                    disabled={isUpdating}
                   >
-                    {isUpdating ? "Salvando..." : "Ir para pagamento"}
+                    {isUpdating ? "Processando..." : "Ir para pagamento"}
                   </Button>
                 )}
               </CardContent>
