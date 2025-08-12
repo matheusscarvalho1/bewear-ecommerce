@@ -5,7 +5,10 @@ import { headers } from "next/headers";
 import Stripe from "stripe";
 
 import { db } from "@/db";
-import { orderItemTable, orderTable } from "@/db/schema";
+import {
+  orderItemTable,
+  orderTable,
+} from "@/db/schema";
 import { auth } from "@/lib/auth";
 
 import {
@@ -22,30 +25,23 @@ export const createCheckoutSession = async (
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-
   if (!session?.user) {
     throw new Error("Unauthorized");
   }
   const { orderId } = createCheckoutSessionSchema.parse(data);
-
   const order = await db.query.orderTable.findFirst({
     where: eq(orderTable.id, orderId),
   });
   if (!order) {
-    throw new Error("Cart not found");
+    throw new Error("Order not found");
   }
   if (order.userId !== session.user.id) {
     throw new Error("Unauthorized");
   }
-
   const orderItems = await db.query.orderItemTable.findMany({
     where: eq(orderItemTable.orderId, orderId),
     with: {
-      productVariant: {
-        with: {
-          product: true,
-        },
-      },
+      productVariant: { with: { product: true } },
     },
   });
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -57,7 +53,6 @@ export const createCheckoutSession = async (
     metadata: {
       orderId,
     },
-    // Itens do meu carrinho
     line_items: orderItems.map((orderItem) => {
       return {
         price_data: {
