@@ -23,7 +23,6 @@ Bewear é uma aplicação de e-commerce moderna, desenvolvida para proporcionar 
 - **Lucide React**: Ícones modernos e customizáveis para interfaces ricas.
 - **dotenv**: Gerenciamento de variáveis de ambiente.
 - **ESLint, Prettier**: Padronização de código, linting e formatação automática.
-- **Jest/Testing Library** (opcional): Estrutura pronta para testes unitários e de integração.
 - **Vercel**: Deploy rápido, escalável e com preview automático de PRs.
 
 ---
@@ -144,18 +143,6 @@ export const POST = async (request: Request) => {
 - **Responsividade**: Layout mobile-first com TailwindCSS.
 - **Validação**: Zod para schemas e validação de dados em todas as camadas.
 - **Padronização de Código**: ESLint, Prettier e convenções de projeto.
-- **Testes**: Estrutura pronta para testes unitários e de integração.
-- **Internacionalização**: Estrutura para múltiplos idiomas.
 - **Deploy**: Pronto para deploy na Vercel, com preview automático de PRs.
 
 ---
-
-## Contribuição
-
-Pull requests são bem-vindos! Sinta-se à vontade para abrir issues e sugerir melhorias.
-
----
-
-## Licença
-
-Este projeto é open-source e está sob a licença MIT.
