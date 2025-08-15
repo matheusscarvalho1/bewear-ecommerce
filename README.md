@@ -1,148 +1,223 @@
-# Bewear - E-commerce de Moda
+# BeWear - E-commerce de Roupas
 
-## Visão Geral
+## 📋 Descrição
 
-Bewear é uma aplicação de e-commerce moderna, desenvolvida para proporcionar alta performance, escalabilidade e uma experiência de usuário diferenciada. O projeto utiliza o que há de mais atual no ecossistema React/Next.js, integrações robustas com métodos de pagamento (Stripe), autenticação segura, arquitetura modular e foco em boas práticas de desenvolvimento fullstack.
+BeWear é uma plataforma de e-commerce moderna desenvolvida com Next.js 15, focada na venda de roupas e acessórios. O projeto implementa uma arquitetura full-stack com autenticação, gerenciamento de carrinho, processamento de pagamentos e sistema de pedidos.
 
----
+## 🚀 Tecnologias Principais
 
-## Tecnologias e Ferramentas Utilizadas
+### Frontend
 
-- **Next.js 15**: Framework React para aplicações web modernas, com suporte a server components, server actions, roteamento avançado e otimizações automáticas.
-- **React 19**: Biblioteca para construção de interfaces reativas, declarativas e com novo modelo de rendering.
-- **TypeScript**: Tipagem estática para maior segurança, produtividade e refatoração.
-- **TailwindCSS**: Utilitário de CSS para estilização rápida, responsiva e consistente.
-- **Drizzle ORM**: ORM moderno para Node.js, utilizado para modelagem, migrations e manipulação do banco de dados relacional (PostgreSQL).
-- **PostgreSQL**: Banco de dados relacional robusto, seguro e escalável.
-- **Stripe**: Plataforma de pagamentos utilizada para processar transações, criar sessões de checkout e receber notificações via webhooks.
-- **React Query (@tanstack/react-query)**: Gerenciamento de estado assíncrono, cache de dados, sincronização e revalidação automática no frontend.
-- **Better Auth**: Solução de autenticação moderna, com suporte a login social (Google) e email/senha, integração com Drizzle ORM e gerenciamento de sessão seguro.
-- **Zod**: Validação de schemas e dados, tanto no backend quanto no frontend.
-- **Radix UI**: Componentes de UI acessíveis, customizáveis e com foco em acessibilidade.
-- **React Hook Form**: Gerenciamento de formulários, validação e integração com Zod.
-- **Lucide React**: Ícones modernos e customizáveis para interfaces ricas.
-- **dotenv**: Gerenciamento de variáveis de ambiente.
-- **ESLint, Prettier**: Padronização de código, linting e formatação automática.
-- **Vercel**: Deploy rápido, escalável e com preview automático de PRs.
+- **Next.js 15** - Framework React com App Router e Server Components
+- **React 19** - Biblioteca para construção de interfaces
+- **TypeScript** - Tipagem estática para JavaScript
+- **Tailwind CSS 4** - Framework CSS utilitário
+- **Radix UI** - Componentes de interface acessíveis
+- **Lucide React** - Ícones modernos
+- **React Hook Form** - Gerenciamento de formulários
+- **Zod** - Validação de esquemas
 
----
+### Backend & Banco de Dados
 
-## Principais Funcionalidades
+- **Drizzle ORM** - ORM TypeScript-first para PostgreSQL
+- **PostgreSQL** - Banco de dados relacional
+- **Better Auth** - Sistema de autenticação moderno
+- **Stripe** - Processamento de pagamentos
 
-- **Catálogo de Produtos**: Listagem, filtragem, busca e visualização de produtos e variantes (cores, tamanhos, etc).
-- **Carrinho de Compras**: Adição, remoção, alteração de quantidade, seleção e gerenciamento de endereço de entrega.
-- **Checkout Integrado com Stripe**: Criação de sessão de pagamento, redirecionamento seguro e confirmação automática via webhook.
-- **Gestão de Pedidos**: Histórico de pedidos, status (pendente, pago, cancelado), detalhes completos e rastreabilidade.
-- **Autenticação Completa**: Login via Google ou email/senha, gerenciamento de sessão, proteção de rotas e recuperação de senha.
-- **Endereços de Entrega**: Cadastro, seleção, edição e gerenciamento de múltiplos endereços por usuário.
-- **Painel do Usuário**: Visualização de pedidos, endereços, informações pessoais e preferências.
-- **Acessibilidade**: Componentes com foco em acessibilidade (Radix UI, navegação por teclado, ARIA).
-- **Internacionalização (i18n)**: Estrutura pronta para múltiplos idiomas.
-- **Responsividade**: Layout adaptado para mobile, tablet e desktop.
-- **UX Moderna**: Feedback visual, loaders, animações e navegação fluida.
+### Estado & Cache
 
----
+- **TanStack Query (React Query)** - Gerenciamento de estado do servidor
+- **Server Actions** - Ações do servidor integradas ao Next.js
 
-## Arquitetura e Métodos de Desenvolvimento
+### Ferramentas de Desenvolvimento
 
-### Server Actions + React Query
+- **ESLint** - Linting de código
+- **Prettier** - Formatação de código
+- **Drizzle Kit** - Migrações e seed do banco de dados
 
-- Utilização de **server actions** do Next.js para manipulação de dados sensíveis e operações críticas (ex: adicionar/remover produtos do carrinho, finalizar pedido, etc), garantindo segurança e performance.
-- **React Query** para cache, sincronização e atualização automática dos dados do lado do cliente, proporcionando uma experiência fluida e responsiva.
-- Hooks customizados encapsulam as server actions, promovendo separação de responsabilidades, reuso de lógica e fácil manutenção.
+## 🏗️ Arquitetura do Projeto
 
-### Autenticação
+### Estrutura de Pastas
 
-- Implementada com **Better Auth** e integração com Drizzle ORM.
-- Suporte a login social (Google) e email/senha, com fluxo de cadastro, login e logout.
-- Sessões persistentes, seguras e proteção de rotas sensíveis.
-- Estrutura pronta para autenticação multifator (MFA) e recuperação de senha.
-
-### Banco de Dados
-
-- Modelagem relacional com Drizzle ORM e PostgreSQL.
-- Tabelas para usuários, sessões, contas, verificações, categorias, produtos, variantes, endereços, carrinho, pedidos e itens de pedido.
-- Scripts de seed para popular o banco com categorias, produtos e variantes.
-- Migrations versionadas e seguras.
-
-### Integração com Stripe (Pagamentos)
-
-- Criação de sessão de checkout Stripe via server action, com envio de metadados do pedido.
-- Webhook Stripe configurado para receber notificações de pagamento e atualizar o status do pedido automaticamente.
-- Segurança garantida por validação de assinatura do Stripe no webhook.
-- Suporte a múltiplos métodos de pagamento e fácil expansão para outros gateways.
-
-#### Exemplo de Webhook Stripe:
-
-```ts
-export const POST = async (request: Request) => {
-  // ...
-  const signature = request.headers.get("stripe-signature");
-  const text = await request.text();
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-  const event = stripe.webhooks.constructEvent(
-    text,
-    signature,
-    process.env.STRIPE_WEBHOOK_SECRET,
-  );
-  if (event.type === "checkout.session.completed") {
-    // Atualiza status do pedido para 'paid'
-  }
-  // ...
-};
+```
+src/
+├── app/                    # App Router do Next.js 15
+│   ├── api/               # Rotas da API
+│   ├── authentication/    # Páginas de autenticação
+│   ├── cart/             # Páginas do carrinho
+│   ├── category/         # Páginas de categorias
+│   ├── checkout/         # Páginas de checkout
+│   └── my-orders/        # Páginas de pedidos
+├── components/           # Componentes reutilizáveis
+│   ├── common/          # Componentes comuns
+│   └── ui/              # Componentes de interface
+├── data/                # Funções de acesso a dados
+├── db/                  # Configuração do banco de dados
+├── hooks/               # Custom hooks React
+├── lib/                 # Utilitários e configurações
+└── providers/           # Providers React
 ```
 
+### Padrões de Desenvolvimento
+
+#### Server Components
+
+- Utilização extensiva de Server Components do Next.js 15
+- Renderização no servidor para melhor performance
+- SEO otimizado com metadados dinâmicos
+
+#### Server Actions
+
+- Ações do servidor para operações de dados
+- Validação com Zod
+- Integração com React Hook Form
+
+#### Gerenciamento de Estado
+
+- TanStack Query para cache e sincronização de dados
+- Server State management
+- Otimistic updates
+
+## 🔐 Sistema de Autenticação
+
+### Better Auth
+
+- Autenticação com email/senha
+- Login social com Google OAuth
+- Sessões seguras com tokens
+- Verificação de email
+
+### Funcionalidades
+
+- Registro e login de usuários
+- Recuperação de senha
+- Perfil de usuário
+- Sessões persistentes
+
+## 🛒 Sistema de E-commerce
+
+### Produtos e Categorias
+
+- Catálogo de produtos com variantes
+- Sistema de categorias
+- Busca e filtros
+- Imagens otimizadas
+
+### Carrinho de Compras
+
+- Adição/remoção de produtos
+- Atualização de quantidades
+- Persistência de dados
+- Cálculo de totais
+
+### Checkout e Pagamentos
+
+- Integração com Stripe
+- Processamento seguro de pagamentos
+- Webhooks para confirmação
+- Histórico de pedidos
+
+### Endereços de Entrega
+
+- Múltiplos endereços por usuário
+- Seleção de endereço para entrega
+- Validação de endereços
+
+## 💳 Integração com Stripe
+
+### Funcionalidades
+
+- Criação de sessões de checkout
+- Processamento de pagamentos
+- Webhooks para atualizações
+- Histórico de transações
+
+### Segurança
+
+- Verificação de assinatura de webhooks
+- Tokens seguros
+- Validação de sessões
+
+## 🎨 Interface do Usuário
+
+### Design System
+
+- Componentes baseados em Radix UI
+- Sistema de design consistente
+- Tema escuro/claro
+- Responsividade completa
+
+### Componentes Principais
+
+- Header com navegação
+- Footer informativo
+- Cards de produtos
+- Formulários validados
+- Modais e sheets
+
+## 📊 Banco de Dados
+
+### Schema Principal
+
+- **Users** - Informações dos usuários
+- **Products** - Catálogo de produtos
+- **Categories** - Categorias de produtos
+- **Cart** - Carrinho de compras
+- **Orders** - Pedidos realizados
+- **Shipping Addresses** - Endereços de entrega
+
+### Relacionamentos
+
+- Usuários podem ter múltiplos endereços
+- Produtos pertencem a categorias
+- Carrinho vinculado ao usuário
+- Pedidos com histórico completo
+
+## 🔧 Configuração e Deploy
+
+### Scripts Disponíveis
+
+- `npm run dev` - Desenvolvimento local
+- `npm run build` - Build de produção
+- `npm run start` - Servidor de produção
+- `npm run lint` - Verificação de código
+
+## 🚀 Funcionalidades Principais
+
+### Para Usuários
+
+- Navegação por categorias
+- Busca de produtos
+- Carrinho de compras
+- Checkout seguro
+- Histórico de pedidos
+- Gerenciamento de perfil
+
+### Para Administradores
+
+- Dashboard de vendas
+- Gerenciamento de produtos
+- Controle de estoque
+- Relatórios de pedidos
+
+## 📱 Responsividade
+
+- Design mobile-first
+- Performance otimizada
+
+## 🔒 Segurança
+
+- Autenticação segura
+- Validação de dados
+- Sanitização de inputs
+
+## 📈 Performance
+
+- Server Components para renderização
+- Otimização de imagens
+- Lazy loading
+- Cache inteligente
+
 ---
 
-## Como rodar o projeto
-
-1. Instale as dependências:
-   ```bash
-   npm install
-   ```
-2. Configure as variáveis de ambiente (`.env.local`):
-   - STRIPE_SECRET_KEY
-   - STRIPE_WEBHOOK_SECRET
-   - DATABASE_URL
-   - GOOGLE_CLIENT_ID
-   - GOOGLE_CLIENT_SECRET
-   - NEXT_PUBLIC_APP_URL
-   - Outras necessárias
-3. Execute as migrations e o seed do banco:
-   ```bash
-   npm run drizzle-kit:push
-   npm run drizzle-kit:seed
-   ```
-4. Rode o servidor de desenvolvimento:
-   ```bash
-   npm run dev
-   ```
-5. (Opcional) Execute os testes:
-   ```bash
-   npm run test
-   ```
-
----
-
-## Estrutura de Pastas
-
-- `src/app/` - Páginas, rotas, server actions e API routes
-- `src/actions/` - Server actions para manipulação de dados e integrações
-- `src/db/` - Schema, conexão, migrations e seed do banco
-- `src/lib/` - Lógicas utilitárias (auth, utils, helpers)
-- `src/hooks/` - Hooks customizados (queries e mutations React Query)
-- `src/components/` - Componentes de UI reutilizáveis, comuns e de layout
-- `public/` - Imagens, ícones e assets estáticos
-
----
-
-## Padrões Adotados
-
-- **Componentização**: UI modular, reutilizável e fácil de manter.
-- **Acessibilidade**: Uso de Radix UI, ARIA e navegação por teclado.
-- **Responsividade**: Layout mobile-first com TailwindCSS.
-- **Validação**: Zod para schemas e validação de dados em todas as camadas.
-- **Padronização de Código**: ESLint, Prettier e convenções de projeto.
-- **Deploy**: Pronto para deploy na Vercel, com preview automático de PRs.
-
----
+Desenvolvido com ❤️ usando Next.js 15 e tecnologias modernas de desenvolvimento web.
