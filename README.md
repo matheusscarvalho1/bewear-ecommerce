@@ -12,6 +12,7 @@ BeWear é uma plataforma de e-commerce moderna desenvolvida com Next.js 15, foca
 - **React 19** - Biblioteca para construção de interfaces
 - **TypeScript** - Tipagem estática para JavaScript
 - **Tailwind CSS 4** - Framework CSS utilitário
+- **shadcn/ui** - Biblioteca de componentes baseada em Radix UI
 - **Radix UI** - Componentes de interface acessíveis
 - **Lucide React** - Ícones modernos
 - **React Hook Form** - Gerenciamento de formulários
@@ -142,18 +143,20 @@ src/
 
 ### Design System
 
-- Componentes baseados em Radix UI
-- Sistema de design consistente
+- Componentes baseados em shadcn/ui e Radix UI
+- Sistema de design consistente e acessível
 - Tema escuro/claro
 - Responsividade completa
+- Componentes customizáveis com Tailwind CSS
 
 ### Componentes Principais
 
 - Header com navegação
 - Footer informativo
 - Cards de produtos
-- Formulários validados
+- Formulários validados com React Hook Form
 - Modais e sheets
+- Componentes shadcn/ui (Button, Card, Dialog, Form, Input, etc.)
 
 ## 📊 Banco de Dados
 
@@ -219,5 +222,11 @@ src/
 - Cache inteligente
 
 ---
+
+## 👨‍💻 Desenvolvido por
+
+**Matheus Carvalho**
+
+LinkedIn: [@matheusscarvalho](https://www.linkedin.com/in/matheusscarvalho/)
 
 Desenvolvido com ❤️ usando Next.js 15 e tecnologias modernas de desenvolvimento web.
