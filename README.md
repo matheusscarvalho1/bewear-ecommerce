@@ -43,18 +43,24 @@ BeWear é uma plataforma de e-commerce moderna desenvolvida com Next.js 15, foca
 ```
 src/
 ├── app/                    # App Router do Next.js 15
-│   ├── api/               # Rotas da API
+│   ├── api/               # Rotas da API (Stripe webhooks)
 │   ├── authentication/    # Páginas de autenticação
-│   ├── cart/             # Páginas do carrinho
+│   ├── cart/             # Páginas do carrinho (identificação, confirmação)
 │   ├── category/         # Páginas de categorias
 │   ├── checkout/         # Páginas de checkout
-│   └── my-orders/        # Páginas de pedidos
+│   ├── my-orders/        # Páginas de pedidos
+│   └── product-variant/  # Páginas de produtos
+├── actions/              # Server Actions
+│   ├── add-cart-product/ # Adicionar produtos ao carrinho
+│   ├── get-cart/         # Buscar carrinho
+│   ├── finish-order/     # Finalizar pedido
+│   └── ...               # Outras ações
 ├── components/           # Componentes reutilizáveis
-│   ├── common/          # Componentes comuns
-│   └── ui/              # Componentes de interface
-├── data/                # Funções de acesso a dados
+│   ├── common/          # Componentes comuns (Header, Footer, Cart)
+│   └── ui/              # Componentes shadcn/ui
+├── data/                # Funções de acesso a dados (Server Components)
 ├── db/                  # Configuração do banco de dados
-├── hooks/               # Custom hooks React
+├── hooks/               # Custom hooks React (queries e mutations)
 ├── lib/                 # Utilitários e configurações
 └── providers/           # Providers React
 ```
@@ -72,12 +78,14 @@ src/
 - Ações do servidor para operações de dados
 - Validação com Zod
 - Integração com React Hook Form
+- Autenticação automática via headers
 
 #### Gerenciamento de Estado
 
 - TanStack Query para cache e sincronização de dados
 - Server State management
 - Otimistic updates
+- Hooks customizados para queries e mutations
 
 ## 🔐 Sistema de Autenticação
 
@@ -91,9 +99,11 @@ src/
 ### Funcionalidades
 
 - Registro e login de usuários
+- Login social com Google OAuth
 - Recuperação de senha
 - Perfil de usuário
 - Sessões persistentes
+- Middleware de checagem de autenticação (`checkAuthentication`)
 
 ## 🛒 Sistema de E-commerce
 
@@ -106,10 +116,12 @@ src/
 
 ### Carrinho de Compras
 
-- Adição/remoção de produtos
+- Adição/remoção de produtos com verificação de autenticação
 - Atualização de quantidades
 - Persistência de dados
 - Cálculo de totais
+- Verificação de carrinho vazio
+- Toast notifications para feedback do usuário
 
 ### Checkout e Pagamentos
 
@@ -123,6 +135,7 @@ src/
 - Múltiplos endereços por usuário
 - Seleção de endereço para entrega
 - Validação de endereços
+- Formulário de cadastro de novos endereços
 
 ## 💳 Integração com Stripe
 
@@ -151,12 +164,14 @@ src/
 
 ### Componentes Principais
 
-- Header com navegação
+- Header com navegação e carrinho
 - Footer informativo
 - Cards de produtos
 - Formulários validados com React Hook Form
 - Modais e sheets
 - Componentes shadcn/ui (Button, Card, Dialog, Form, Input, etc.)
+- Carrinho lateral com estados de autenticação
+- Resumo de compra com valores unitários e totais
 
 ## 📊 Banco de Dados
 
@@ -177,6 +192,17 @@ src/
 - Pedidos com histórico completo
 
 ## 🔧 Configuração e Deploy
+
+### Variáveis de Ambiente Necessárias
+
+```env
+DATABASE_URL=postgresql://...
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+STRIPE_SECRET_KEY=...
+STRIPE_WEBHOOK_SECRET=...
+NEXT_PUBLIC_APP_URL=...
+```
 
 ### Scripts Disponíveis
 
@@ -220,6 +246,10 @@ src/
 - Otimização de imagens
 - Lazy loading
 - Cache inteligente
+- Parallel data fetching (Promise.all) para funções independentes
+- Server Actions otimizadas
+- Cálculos de totais em paralelo
+- Queries paralelas para produtos relacionados
 
 ---
 
