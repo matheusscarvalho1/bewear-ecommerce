@@ -2,10 +2,10 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import { useState } from "react";
 
 import { addProductToCart } from "@/actions/add-cart-product";
+import LoginDialog from "@/components/common/login-dialog";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 
@@ -19,8 +19,8 @@ const AddToCartButton = ({
   quantity,
 }: AddToCartButtonProps) => {
   const queryClient = useQueryClient();
-  const router = useRouter();
   const { data: session } = authClient.useSession();
+  const [loginOpen, setLoginOpen] = useState(false);
 
   const { mutate, isPending } = useMutation({
     mutationKey: ["addProductToCart", productVariantId, quantity],
@@ -36,31 +36,26 @@ const AddToCartButton = ({
 
   const handleAddToCart = () => {
     if (!session?.user) {
-      toast.error(
-        "Você precisa fazer login para adicionar produtos ao carrinho",
-        {
-          action: {
-            label: "Fazer Login",
-            onClick: () => router.push("/authentication"),
-          },
-        },
-      );
+      setLoginOpen(true);
       return;
     }
     mutate();
   };
 
   return (
-    <Button
-      className="rounded-full"
-      size="lg"
-      variant="outline"
-      disabled={isPending}
-      onClick={handleAddToCart}
-    >
-      {isPending && <Loader2 className="animate-spin" />}
-      Adicionar à sacola
-    </Button>
+    <>
+      <Button
+        className="rounded-full"
+        size="lg"
+        variant="outline"
+        disabled={isPending}
+        onClick={handleAddToCart}
+      >
+        {isPending && <Loader2 className="animate-spin" />}
+        Adicionar à sacola
+      </Button>
+      <LoginDialog isOpen={loginOpen} onOpenChange={setLoginOpen} />
+    </>
   );
 };
 

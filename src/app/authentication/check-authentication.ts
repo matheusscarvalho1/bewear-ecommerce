@@ -8,7 +8,7 @@ export const checkAuthentication = async () => {
     headers: await headers(),
   });
   if (!session?.user.id) {
-    redirect("/authentication");
+    redirect("/authentication?error=not-authenticated");
   }
   return session;
 };
