@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import BrandsList from "@/components/brands-list";
 import CategorySelector from "@/components/common/category-selector";
 import Footer from "@/components/common/footer";
 import { Header } from "@/components/common/header";
@@ -48,6 +49,8 @@ export default async function Home() {
             />
           </div>
         </div>
+
+        <BrandsList />
 
         <ProductList title="Mais vendidos" products={products} />
 
