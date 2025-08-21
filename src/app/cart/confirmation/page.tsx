@@ -1,38 +1,17 @@
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
+import { checkAuthentication } from "@/app/authentication/check-authentication";
 import Footer from "@/components/common/footer";
 import { Header } from "@/components/common/header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { db } from "@/db";
-import { auth } from "@/lib/auth";
+import { getCartData } from "@/data/carts/get-cart";
 
 import CartSummary from "../components/cart-sumary";
 import FinishOrderButton from "./components/finish-order-button";
 
 const CartConfirmation = async () => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  if (!session?.user.id) {
-    redirect("/authentication");
-  }
-  const cart = await db.query.cartTable.findFirst({
-    where: (cart, { eq }) => eq(cart.userId, session.user.id),
-    with: {
-      shippingAddress: true,
-      items: {
-        with: {
-          productVariant: {
-            with: {
-              product: true,
-            },
-          },
-        },
-      },
-    },
-  });
+  const session = await checkAuthentication();
+  const cart = await getCartData(session);
   if (!cart || cart?.items.length === 0) {
     redirect("/");
   }
