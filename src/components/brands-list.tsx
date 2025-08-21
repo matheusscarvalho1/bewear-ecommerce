@@ -8,9 +8,7 @@ const BrandsList = () => {
       <h3 className="px-5 text-lg font-semibold md:text-xl lg:text-2xl">
         Marcas parceiras
       </h3>
-
-      <div className="flex w-full gap-4 overflow-x-auto scroll-smooth px-5 md:gap-6 lg:gap-8 [&::-webkit-scrollbar]:hidden">
-        {/* Nike */}
+      <div className="flex w-full gap-4 overflow-x-auto scroll-smooth px-5 md:gap-6 lg:justify-around lg:gap-8 [&::-webkit-scrollbar]:hidden">
         <div className="w-32 flex-shrink-0 md:w-40 lg:w-48">
           <div className="flex flex-col items-center gap-3">
             <div className="flex h-32 w-32 items-center justify-center rounded-3xl border border-[#F1F1F1] p-4 md:h-40 md:w-40 lg:h-48 lg:w-48">
@@ -26,8 +24,6 @@ const BrandsList = () => {
             <p className="text-center text-sm font-medium md:text-base">Nike</p>
           </div>
         </div>
-
-        {/* Adidas */}
         <div className="w-32 flex-shrink-0 md:w-40 lg:w-48">
           <div className="flex flex-col items-center gap-3">
             <div className="flex h-32 w-32 items-center justify-center rounded-3xl border border-[#F1F1F1] p-4 md:h-40 md:w-40 lg:h-48 lg:w-48">
@@ -45,8 +41,6 @@ const BrandsList = () => {
             </p>
           </div>
         </div>
-
-        {/* Puma */}
         <div className="w-32 flex-shrink-0 md:w-40 lg:w-48">
           <div className="flex flex-col items-center gap-3">
             <div className="flex h-32 w-32 items-center justify-center rounded-3xl border border-[#F1F1F1] p-4 md:h-40 md:w-40 lg:h-48 lg:w-48">
@@ -62,8 +56,6 @@ const BrandsList = () => {
             <p className="text-center text-sm font-medium md:text-base">Puma</p>
           </div>
         </div>
-
-        {/* New Balance */}
         <div className="w-32 flex-shrink-0 md:w-40 lg:w-48">
           <div className="flex flex-col items-center gap-3">
             <div className="flex h-32 w-32 items-center justify-center rounded-3xl border border-[#F1F1F1] p-4 md:h-40 md:w-40 lg:h-48 lg:w-48">
@@ -81,8 +73,6 @@ const BrandsList = () => {
             </p>
           </div>
         </div>
-
-        {/* Converse */}
         <div className="w-32 flex-shrink-0 md:w-40 lg:w-48">
           <div className="flex flex-col items-center gap-3">
             <div className="flex h-32 w-32 items-center justify-center rounded-3xl border border-[#F1F1F1] p-4 md:h-40 md:w-40 lg:h-48 lg:w-48">
@@ -100,8 +90,6 @@ const BrandsList = () => {
             </p>
           </div>
         </div>
-
-        {/* Polo - Imagem com proporção diferente (26.76 x 60) */}
         <div className="w-32 flex-shrink-0 md:w-40 lg:w-48">
           <div className="flex flex-col items-center gap-3">
             <div className="flex h-32 w-32 items-center justify-center rounded-3xl border border-[#F1F1F1] p-4 md:h-40 md:w-40 lg:h-48 lg:w-48">
@@ -117,8 +105,6 @@ const BrandsList = () => {
             <p className="text-center text-sm font-medium md:text-base">Polo</p>
           </div>
         </div>
-
-        {/* Zara */}
         <div className="w-32 flex-shrink-0 md:w-40 lg:w-48">
           <div className="flex flex-col items-center gap-3">
             <div className="flex h-32 w-32 items-center justify-center rounded-3xl border border-[#F1F1F1] p-4 md:h-40 md:w-40 lg:h-48 lg:w-48">
