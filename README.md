@@ -1,8 +1,8 @@
-# BeWear - E-commerce de Roupas
+# BEWEAR - E-commerce de Roupas
 
 ## 📋 Descrição
 
-BeWear é uma plataforma de e-commerce moderna desenvolvida com Next.js 15, focada na venda de roupas e acessórios. O projeto implementa uma arquitetura full-stack com autenticação, gerenciamento de carrinho, processamento de pagamentos e sistema de pedidos.
+BEWEAR é uma plataforma de e-commerce moderna desenvolvida com Next.js 15, focada na venda de roupas e acessórios. O projeto implementa uma arquitetura full-stack com autenticação, gerenciamento de carrinho, processamento de pagamentos e sistema de pedidos.
 
 ## 🚀 Tecnologias Principais
 
