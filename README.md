@@ -36,6 +36,14 @@ BEWEAR é uma plataforma de e-commerce moderna desenvolvida com Next.js 15, foca
 - **Prettier** - Formatação de código
 - **Drizzle Kit** - Migrações e seed do banco de dados
 
+### 🛠️ Método de Desenvolvimento
+
+- **Mobile First**
+- O design e a interface foram planejados priorizando dispositivos móveis.
+- Componentes responsivos adaptam-se a diferentes tamanhos de tela.
+- Layouts, grids e tipografia foram otimizados para experiência mobile antes do desktop.
+- Utilização de Tailwind CSS para facilitar a criação de breakpoints e estilos responsivos.
+
 ## 🏗️ Arquitetura do Projeto
 
 ### Estrutura de Pastas
