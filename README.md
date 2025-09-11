@@ -1,6 +1,6 @@
 # BEWEAR - E-commerce de Roupas
 
-**Link** - https://bewear-ecommerce-khaki.vercel.app/
+**Link**: https://bewear-ecommerce-khaki.vercel.app/
 
 ## 📋 Descrição
 
