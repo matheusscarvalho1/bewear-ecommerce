@@ -28,11 +28,11 @@ const ProductActions = ({ productVariantId }: ProductActionsProps) => {
         <div className="space-y-4">
           <h3 className="font-medium">Quantidade</h3>
           <div className="flex w-[100px] items-center justify-between rounded-lg border">
-            <Button size="icon" variant="ghost" onClick={handleDecrement}>
+            <Button size="icon" variant="ghost" onClick={handleDecrement} className="cursor-pointer">
               <MinusIcon />
             </Button>
             <p>{quantity}</p>
-            <Button size="icon" variant="ghost" onClick={handleIncrement}>
+            <Button size="icon" variant="ghost" onClick={handleIncrement} className="cursor-pointer">
               <PlusIcon />
             </Button>
           </div>
@@ -43,9 +43,6 @@ const ProductActions = ({ productVariantId }: ProductActionsProps) => {
           productVariantId={productVariantId}
           quantity={quantity}
         />
-        <Button className="rounded-full" size="lg">
-          Comprar agora
-        </Button>
       </div>
     </>
   );

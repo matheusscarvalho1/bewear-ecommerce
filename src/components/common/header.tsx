@@ -29,7 +29,7 @@ export const Header = () => {
       <div className="flex items-center gap-3">
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="outline" size="icon">
+            <Button variant="outline" size="icon" className="cursor-pointer">
               <MenuIcon />
             </Button>
           </SheetTrigger>
