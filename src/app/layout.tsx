@@ -19,6 +19,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "BEWEAR - Vista-se com atitude",
   description: "Projeto web ecommerce",
+  icons:{
+    icon: '/bewear.svg'
+  }
 };
 
 export default function RootLayout({
