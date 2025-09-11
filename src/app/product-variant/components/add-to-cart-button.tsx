@@ -3,6 +3,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 import { addProductToCart } from "@/actions/add-cart-product";
 import LoginDialog from "@/components/common/login-dialog";
@@ -40,14 +41,14 @@ const AddToCartButton = ({
       return;
     }
     mutate();
+    toast.success("Produto adicionado ao carrinho!")
   };
 
   return (
     <>
       <Button
-        className="rounded-full"
+        className="rounded-full cursor-pointer"
         size="lg"
-        variant="outline"
         disabled={isPending}
         onClick={handleAddToCart}
       >
