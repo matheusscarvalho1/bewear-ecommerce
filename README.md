@@ -232,13 +232,6 @@ NEXT_PUBLIC_APP_URL=...
 - Histórico de pedidos
 - Gerenciamento de perfil
 
-### Para Administradores
-
-- Dashboard de vendas
-- Gerenciamento de produtos
-- Controle de estoque
-- Relatórios de pedidos
-
 ## 📱 Responsividade
 
 - Design mobile-first
